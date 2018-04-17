@@ -9,7 +9,7 @@
 -author("Marcin Maleńczuk").
 
 %% API
--export([createMonitor/0, addStation/3, addValue/5, removeValue/4, getOneValue/4, getStationMean/3, getDailyMean/3, getMinMaxValue/4]).
+-export([createMonitor/0, addStation/3, addValue/5, removeValue/4, getOneValue/4, getStationMean/3, getDailyMean/3, getMinMaxValue/4, findStation/2, getStationDailyMean/3]).
 
 -include("pollution_rec.hrl").
 
@@ -20,7 +20,7 @@ createMonitor() -> {ok, #monitor{}}.
 addStation(Monitor, Name, {_, _} = Location)
   when is_record(Monitor, monitor) ->
   case not usedName(Monitor, Name) and not usedLocation(Monitor, Location) of
-    false -> {error, "Station already exists"};
+      false -> {error, "Station already exists"};
     true -> {ok,
       Monitor#monitor{
         stations = maps:put(
@@ -118,7 +118,7 @@ getStationMean(Monitor, Station, Type)
     maps:filter(
       fun(_, M) -> M#measurement.type == Type end,
       Station#station.measurements)),
-  safeDiv(Sum, Count);
+  {ok, safeDiv(Sum, Count)};
 
 getStationMean(Monitor, StationInfo, Type)
   when is_record(Monitor, monitor) ->
@@ -139,7 +139,7 @@ getStationDailyMean(Station, {_, _, _} = Date, Type)
     maps:filter(
       fun(_, M) -> (M#measurement.type == Type) and (element(1, M#measurement.datetime) == Date) end,
       Station#station.measurements)),
-  safeDiv(Sum, Count);
+  {ok, safeDiv(Sum, Count)};
 
 getStationDailyMean(_, _, _) -> {error, "Wrong arguments"}.
 
@@ -152,9 +152,9 @@ getDailyMean(Monitor, {_, _, _} = Date, Type)
       (_, StationDailyMean, {S, C}) -> {S + StationDailyMean, C + 1} end,
     {0, 0},
     maps:map(
-      fun(_, S) -> getStationDailyMean(S, Date, Type) end,
+      fun(_, S) -> element(2, getStationDailyMean(S, Date, Type)) end,
       Monitor#monitor.stations)),
-  safeDiv(Sum, Count);
+  {ok, safeDiv(Sum, Count)};
 
 getDailyMean(_, _, _) -> {error, "Wrong arguments"}.
 
@@ -162,7 +162,7 @@ getDailyMean(_, _, _) -> {error, "Wrong arguments"}.
 
 getMinMaxValue(_, Station, {_, _, _} = Date, Type)
   when is_record(Station, station) ->
-  maps:fold(
+  {ok, maps:fold(
     fun(_, M, {nomeasurement, nomeasurement}) -> {M#measurement.value, M#measurement.value};
       (_, M, {MinV, MaxV}) when M#measurement.value < MinV -> {M#measurement.value, MaxV};
       (_, M, {MinV, MaxV}) when M#measurement.value > MaxV -> {MinV, M#measurement.value};
@@ -170,7 +170,7 @@ getMinMaxValue(_, Station, {_, _, _} = Date, Type)
     {nomeasurement, nomeasurement},
     maps:filter(
       fun(_, M) -> (M#measurement.type == Type) and (element(1, M#measurement.datetime) == Date) end,
-      Station#station.measurements));
+      Station#station.measurements))};
 
 getMinMaxValue(Monitor, StationInfo, {_, _, _} = Date, Type)
   when is_record(Monitor, monitor) ->
