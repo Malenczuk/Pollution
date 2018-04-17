@@ -7,6 +7,6 @@
 %%%-------------------------------------------------------------------
 -author("Marcin Maleńczuk").
 
--record(monitor, {locations = #{}, stations = #{}}).
+-record(monitor, {stations = #{}}).
 -record(station, {name = "", location, measurements = #{}}).
 -record(measurement, {type, value, datetime}).
