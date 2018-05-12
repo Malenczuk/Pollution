@@ -1,12 +1,12 @@
 %%%-------------------------------------------------------------------
-%%% @author Marcin Maleńczuk
+%%% @author Marcin Malenczuk
 %%% @copyright (C) 2018
 %%% @doc
 %%%
 %%% @end
 %%%-------------------------------------------------------------------
 -module(pollution).
--author("Marcin Maleńczuk").
+-author("Marcin Malenczuk").
 
 %% API
 -export([createMonitor/0, addStation/3, addValue/5, removeValue/4, getOneValue/4, getStationMean/3, getDailyMean/3, getMinMaxValue/4, findStation/2, getStationDailyMean/3]).

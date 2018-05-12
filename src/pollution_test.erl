@@ -1,12 +1,12 @@
 %%%-------------------------------------------------------------------
-%%% @author Marcin Maleńczuk
+%%% @author Marcin Malenczuk
 %%% @copyright (C) 2018
 %%% @doc
 %%%
 %%% @end
 %%%-------------------------------------------------------------------
 -module(pollution_test).
--author("Marcin Maleńczuk").
+-author("Marcin Malenczuk").
 
 -include_lib("eunit/include/eunit.hrl").
 -include("pollution_rec.hrl").

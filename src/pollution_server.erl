@@ -1,13 +1,12 @@
 %%%-------------------------------------------------------------------
-%%% @author malenczuk
-%%% @copyright (C) 2018, <COMPANY>
+%%% @author Marcin Malenczuk
+%%% @copyright (C) 2018
 %%% @doc
 %%%
 %%% @end
-%%% Created : 24. Apr 2018 13:04
 %%%-------------------------------------------------------------------
 -module(pollution_server).
--author("malenczuk").
+-author("Marcin Malenczuk").
 
 %% API
 -export([start/0, stop/0, init/0, getMonitor/0, addStation/2, addValue/4, removeValue/3, getOneValue/3, getStationMean/2, getDailyMean/2, getMinMaxValue/3]).
