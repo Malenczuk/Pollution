@@ -75,8 +75,8 @@ loop(Monitor) ->
       Returned = pollution:removeValue(Monitor, StationInfo, DateTime, Type),
       ?responseMonitor(Pid, Monitor, Returned);
     {get_one_value, Pid, [StationInfo, DateTime, Type]} ->
-      Returned = pollution:getOneValue(Monitor, StationInfo, DateTime, Type),
-      ?responseMonitor(Pid, Monitor, Returned);
+      Pid ! pollution:getOneValue(Monitor, StationInfo, DateTime, Type),
+      loop(Monitor);
     {get_station_mean, Pid, [StationInfo, Type]} ->
       Pid ! pollution:getStationMean(Monitor, StationInfo, Type),
       loop(Monitor);
