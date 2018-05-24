@@ -10,7 +10,7 @@
 -author("Marcin Malenczuk").
 
 -behaviour(gen_server).
-
+-include("pollution_rec.hrl").
 %% API
 -export([start_link/0,
   getMonitor/0,
@@ -33,7 +33,7 @@
 
 -define(SERVER, ?MODULE).
 
--record(state, {monitor}).
+-record(state, {monitor = #monitor{}}).
 
 %%%===================================================================
 %%% API
@@ -121,7 +121,7 @@ handle_call({get_monitor}, _From, State) ->
 handle_call({add_station, Name, Location}, _From, State) ->
   case pollution:addStation(State#state.monitor, Name, Location) of
     {ok, Value} ->
-      {reply, Value, State};
+      {reply, Value, State#state{monitor = Value}};
     {error, Cause} ->
       {reply, Cause, State}
   end;
@@ -129,7 +129,7 @@ handle_call({add_station, Name, Location}, _From, State) ->
 handle_call({add_value, StationInfo, DateTime, Type, Value}, _From, State) ->
   case pollution:addValue(State#state.monitor, StationInfo, DateTime, Type, Value) of
     {ok, Value} ->
-      {reply, Value, State};
+      {reply, Value, State#state{monitor = Value}};
     {error, Cause} ->
       {reply, Cause, State}
   end;
@@ -137,7 +137,7 @@ handle_call({add_value, StationInfo, DateTime, Type, Value}, _From, State) ->
 handle_call({remove_value, StationInfo, DateTime, Type}, _From, State) ->
   case pollution:removeValue(State#state.monitor, StationInfo, DateTime, Type) of
     {ok, Value} ->
-      {reply, Value, State};
+      {reply, Value, State#state{monitor = Value}};
     {error, Cause} ->
       {reply, Cause, State}
   end;
