@@ -1,6 +1,6 @@
 %%%-------------------------------------------------------------------
 %%% @author Marcin Malenczuk
-%%% @copyright (C) 2018
+%%% @copyright (C) 2018 Marcin Malenczuk
 %%% @doc
 %%%
 %%% @end
@@ -9,7 +9,8 @@
 -author("Marcin Malenczuk").
 
 %% API
--export([start/0, stop/0, init/0, getMonitor/0, addStation/2, addValue/4, removeValue/3, getOneValue/3, getStationMean/2, getDailyMean/2, getMinMaxValue/3]).
+-export([start/0, stop/0, init/0, getMonitor/0, addStation/2, addValue/4, removeValue/3, getOneValue/3,
+  getStationMean/2, getDailyMean/2, getMinMaxValue/3]).
 
 -define(responseMonitor(Pid, Monitor, Returned), case Returned of
                                                    {ok, NewMonitor} ->
@@ -24,7 +25,7 @@ start() ->
   register(pServer, spawn(?MODULE, init, [])).
 
 init() ->
-  Monitor = (element(2, pollution:createMonitor())),
+  {ok, Monitor} = pollution:createMonitor(),
   loop(Monitor).
 
 stop() ->
@@ -91,5 +92,8 @@ loop(Monitor) ->
       loop(Monitor);
     {stop, Pid, []} ->
       Pid ! {ok, Monitor},
-      ok
+      ok;
+    crash ->
+      1/0
   end.
+

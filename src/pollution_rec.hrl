@@ -1,11 +1,11 @@
 %%%-------------------------------------------------------------------
-%%% @author Marcin Maleńczuk
-%%% @copyright (C) 2018
+%%% @author Marcin Malenczuk
+%%% @copyright (C) 2018 Marcin Malenczuk
 %%% @doc
 %%%
 %%% @end
 %%%-------------------------------------------------------------------
--author("Marcin Maleńczuk").
+-author("Marcin Malenczuk").
 
 -record(monitor, {stations = #{}}).
 -record(station, {name = "", location, measurements = #{}}).

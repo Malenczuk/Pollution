@@ -1,6 +1,6 @@
 %%%-------------------------------------------------------------------
 %%% @author Marcin Malenczuk
-%%% @copyright (C) 2018
+%%% @copyright (C) 2018 Marcin Malenczuk
 %%% @doc
 %%%
 %%% @end
